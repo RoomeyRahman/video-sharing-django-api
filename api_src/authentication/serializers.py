@@ -31,3 +31,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+class UserSerializer(serializers.ModelSerializer):  # create class to serializer user model
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name')
