@@ -3,16 +3,21 @@ from .models import Video
 from django.contrib.auth.models import User
 
 
-class VideoSerializer(serializers.ModelSerializer):  # create class to serializer model
+# create class to serializer model
+class VideoSerializer(serializers.ModelSerializer):
     creator = serializers.ReadOnlyField(source='creator.username')
+    slug = serializers.ReadOnlyField()
 
     class Meta:
         model = Video
-        fields = ('id', 'title', 'slug', 'description', 'creator', 'url', 'thumbnail_url')
+        fields = ('id', 'title', 'slug', 'description',
+                  'creator', 'url', 'thumbnail_url')
 
 
-class UserSerializer(serializers.ModelSerializer):  # create class to serializer user model
-    videos = serializers.PrimaryKeyRelatedField(many=True, queryset=Video.objects.all())
+# create class to serializer user model
+class UserSerializer(serializers.ModelSerializer):
+    videos = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Video.objects.all())
 
     class Meta:
         model = User

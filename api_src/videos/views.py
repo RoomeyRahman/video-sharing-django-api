@@ -5,6 +5,7 @@ from .models import Video
 from .permissions import IsOwnerOrReadOnly
 from .serializers import VideoSerializer
 from .pagination import CustomPagination
+from nanoid import generate
 
 
 class ListCreateVideoAPIView(ListCreateAPIView):
@@ -16,15 +17,13 @@ class ListCreateVideoAPIView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         # Assign the user who created the video
-        serializer.save(creator=self.request.user)
+        slug = generate(
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890", 8
+        )
+        serializer.save(creator=self.request.user, slug=slug)
 
 
 class RetrieveUpdateDestroyVideoAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = VideoSerializer
     queryset = Video.objects.all()
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
-
-
-
-
-
